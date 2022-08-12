@@ -27,7 +27,8 @@ router.post('/', async (req, res) => {
         where: {
             [Op.and]: [
                 { doctor_id: req.body.doctor_id },
-                { time: req.body.time }
+                { time: req.body.time }, 
+                { date: req.body.date}
             ]
         }
     }).then(dbDoctorData => {
