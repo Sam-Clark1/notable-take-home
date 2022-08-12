@@ -22,39 +22,27 @@ router.get('/', (req, res) => {
     });
 });
 
-// router.post('/', async (req, res) => {
-//     await Appointment.findAll({
-//         where: {
-//             [Op.and]: [
-//                 { doctor_id: req.body.doctor_id },
-//                 { date: req.body.date }
-//             ]
-//         }
-//     }).then(dbDoctorData => {
-//     console.log(dbDoctorData)
-//     if(!dbDoctorData.length >= 3) {
-        
-//     Appointment.create(req.body)
-//     .then((appointment) => res.status(200).json(appointment))
-//     .catch(err => {
-//         console.log(err);
-//         res.status(500).json(err);
-//     })
-//     } else {
-//     res.status(500).json("Too Many Appointments at that time")
-//     }
-//     })
-// });
-
-// Create appointment
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+    await Appointment.findAll({
+        where: {
+            [Op.and]: [
+                { doctor_id: req.body.doctor_id },
+                { time: req.body.time }
+            ]
+        }
+    }).then(dbDoctorData => {
+    if(dbDoctorData.length < 3) {
     Appointment.create(req.body)
-    .then(dbAppointmentData => res.json(dbAppointmentData))
+    .then((appointment) => res.status(200).json(appointment))
     .catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-  });
-})
+        console.log(err);
+        res.status(500).json(err);
+    })
+    } else {
+    res.status(500).json("Too Many Appointments at that time")
+    }
+    })
+});
 
 // Delete appointment by id
 router.delete('/:id', (req, res) => {

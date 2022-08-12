@@ -25,4 +25,15 @@ router.get('/', (req, res) => {
     });
 });
 
+// create doctor
+router.post('/', (req, res) => {
+  Doctor.create(req.body)
+  .then(dbDoctorData => res.json(dbDoctorData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+  });
+});
+
+
 module.exports = router;
